@@ -16,6 +16,12 @@ mongoose.promise = global.Promise;
 //Configure isProduction variable
 const isProduction = process.env.NODE_ENV === 'production';
 
+mongoose.connect('mongodb+srv://nottmystyle-cluster-cxrid.mongodb.net/admin');
+mongoose.set('debug', true);
+
+require('./models/Users.js');
+require('./config/passport');
+
 //Initiate our app
 const app = express();
 
@@ -36,11 +42,10 @@ if(!isProduction) {
 
 //Configure Mongoose
 // mongoose.connect('mongodb://localhost/passport-tutorial');
-mongoose.connect('mongodb+srv://nottmystyle-cluster-cxrid.mongodb.net/admin');
-mongoose.set('debug', true);
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use(require('./routes'));
+// app.use('/', indexRouter);
+// app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
